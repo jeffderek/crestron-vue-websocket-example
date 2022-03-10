@@ -51,7 +51,7 @@ a {
 
     // Colors
     background-color: transparent;
-    color: $black;
+    color: $color-black;
 
     // Size
     padding: 0 16px;
@@ -60,29 +60,29 @@ a {
     height: 60px;
 
     // Border
-    border: solid 1px $border-color;
+    border: solid 1px $color-border;
     border-radius: 4px;
 
     &.primary {
-        background-color: $primary-color;
-        border-color: $primary-color;
-        color: $white;
+        background-color: $color-primary;
+        border-color: $color-primary;
+        color: $color-white;
     }
 
     &.red {
-        background-color: $red;
-        border-color: $red;
-        color: $white;
+        background-color: $color-red;
+        border-color: $color-red;
+        color: $color-white;
     }
 
     &.green {
-        background-color: $green;
-        border-color: $green;
-        color: $white;
+        background-color: $color-green;
+        border-color: $color-green;
+        color: $color-white;
     }
 
     &:active {
-        background: lighten($primary-color, 10);
-        border-color: lighten($primary-color, 10);
+        background: lighten($color-primary, 10);
+        border-color: lighten($color-primary, 10);
     }
 }

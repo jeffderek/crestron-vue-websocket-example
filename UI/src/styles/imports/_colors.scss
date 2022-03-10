@@ -1,8 +1,8 @@
-$primary-color: #024059;
-
-$red: #c21a1a;
-$green: #197353;
-$white: #fff;
-$black: #000;
-
-$border-color: #b3b3b3;
+// Sass variables declared here will be available in all <style>
+// declarations because they are imported as additionalData in vue.config.js
+$color-primary: #024059;
+$color-border: #b3b3b3;
+$color-red: #c21a1a;
+$color-green: #197353;
+$color-white: #fff;
+$color-black: #000;

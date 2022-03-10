@@ -10,7 +10,7 @@
 #nav {
     flex-basis: 200px;
     height: 100%;
-    background: $primary-color;
+    background: $color-primary;
 
     display: flex;
     flex-direction: column;
@@ -28,11 +28,11 @@
         font-weight: bold;
         font-size: 1.2rem;
         text-align: right;
-        color: #fff;
+        color: $color-white;
 
         &.router-link-exact-active {
-            background-color: #fff;
-            color: $primary-color;
+            background-color: $color-white;
+            color: $color-primary;
         }
     }
 }

@@ -1,1 +1,1 @@
-# crestron-vue-example
+# crestron-vue-simpl-example

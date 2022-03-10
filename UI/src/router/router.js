@@ -1,11 +1,6 @@
-import {
-    createMemoryHistory,
-    createRouter,
-    createWebHistory,
-} from 'vue-router';
+import { createMemoryHistory, createRouter } from 'vue-router';
 import Home from '../views/Home.vue';
 import Displays from '../views/Displays.vue';
-import Counter from '../views/Counter.vue';
 
 const routes = [
     {
@@ -17,11 +12,6 @@ const routes = [
         path: '/Displays',
         name: 'Displays',
         component: Displays,
-    },
-    {
-        path: '/Counter',
-        name: 'Counter',
-        component: Counter,
     },
 ];
 

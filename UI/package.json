@@ -1,23 +1,31 @@
 {
-  "name": "crestron-vue-example",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
-  },
-  "dependencies": {
-    "@crestron/ch5-crcomlib": "^1.2.0",
-    "vue": "^3.2.6",
-    "vue-router": "^4.0.11",
-    "vuex": "^4.0.1"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "node-sass": "^5.0.0",
-    "sass-loader": "^10.1.1"
-  }
+    "name": "crestron-vue-example",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "build:archive:dev": "vue-cli-service build --mode development && ch5-cli archive -p crestron-vue-example -d dist -o tsw",
+        "build:archive:prod": "vue-cli-service build && ch5-cli archive -p crestron-vue-example -d dist -o tsw",
+        "deploy": "ch5-cli deploy -H test-tsw1070 -u admin -i C:\\Users\\jm13838\\.ssh\\id_rsa -t touchscreen tsw/crestron-vue-example.ch5z",
+        "onestep:dev": "npm run build:archive:dev && npm run deploy",
+        "onestep:prod": "npm run build:archive:prod && npm run deploy"
+    },
+    "dependencies": {
+        "@crestron/ch5-crcomlib": "^1.2.0",
+        "eruda": "^2.4.1",
+        "lodash": "^4.17.21",
+        "vue": "^3.2.6",
+        "vue-router": "^4.0.11",
+        "vuex": "^4.0.1"
+    },
+    "devDependencies": {
+        "@crestron/ch5-utilities-cli": "^0.1.52",
+        "@vue/cli-plugin-router": "~4.5.0",
+        "@vue/cli-plugin-vuex": "~4.5.0",
+        "@vue/cli-service": "~4.5.0",
+        "@vue/compiler-sfc": "^3.0.0",
+        "node-sass": "^5.0.0",
+        "sass-loader": "^10.1.1"
+    }
 }

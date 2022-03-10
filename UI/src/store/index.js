@@ -1,20 +1,22 @@
 import { createStore } from 'vuex';
+import counter from './modules/counter';
+import displays from './modules/displays';
+import crestron from './plugins/crestron';
 
 export default createStore({
-    state: {
-        counter: 0,
+    state() {
+        return {
+            systemName: '',
+        };
     },
     mutations: {
-        setCounter(state, value) {
-            state.counter = value;
-        },
-        incrementCounter(state) {
-            state.counter++;
-        },
-        decrementCounter(state) {
-            state.counter--;
+        setSystemName(state, systemName) {
+            state.systemName = systemName;
         },
     },
-    actions: {},
-    modules: {},
+    modules: {
+        counter: counter,
+        displays: displays,
+    },
+    plugins: [crestron()],
 });

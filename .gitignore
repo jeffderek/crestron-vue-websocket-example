@@ -1,0 +1,54 @@
+# Crestron SIMPL Files
+*.ASV
+*.arcv
+*.sig
+*.hash
+*.smft
+*.lpz
+*.umc2
+*.um2
+*.sm2
+
+# Crestron SIMPL+ Files
+SPlsWork
+# *.ush
+
+# Crestron VTPro Files
+*.vtp
+*.vtz
+*.c3prj
+# *.ced
+# *.sgd
+
+# Crestron CH5 files
+*.ch5z
+
+# Crestron Simpl# Files
+SIMPLSharpLogs
+bin
+obj
+StyleCop.Cache
+
+# Generic Files
+*.zip
+
+# Generated Files
+*.dll
+*.suo
+*.projectinfo
+*.vsmdi
+*.csproj.user
+*.testrunconfig
+*.sln.cache
+
+# Build paths
+.releases
+.cbh/
+node_modules/
+*/packages/**
+
+# Microsoft Office files
+~$*.doc*
+~$*.xsl*
+~$*.ppt*
+*.xlk

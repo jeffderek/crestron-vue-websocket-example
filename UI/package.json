@@ -13,8 +13,10 @@
     },
     "dependencies": {
         "@crestron/ch5-crcomlib": "^1.2.0",
+        "axios": "^0.26.1",
         "eruda": "^2.4.1",
         "lodash": "^4.17.21",
+        "reconnecting-websocket": "^4.4.0",
         "vue": "^3.2.6",
         "vue-router": "^4.0.11",
         "vuex": "^4.0.1"

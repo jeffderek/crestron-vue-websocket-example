@@ -2,10 +2,39 @@
 import * as CrComLib from '@crestron/ch5-crcomlib/build_bundles/amd/cr-com-lib'; // The Crestron Communication Library
 import debounce from 'lodash/debounce'; // A function for debouncing a changing variable
 import eruda from 'eruda'; // On-screen console for debugging on a panel
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 // Project Imports
 import processFeedback from './crestron/processFeedback'; // Process Feedback Joins into changes of the store
 import processMutation from './crestron/processMutation';
+
+// Create a websocket connection to the processor at `address`
+async function createWebSocket(address) {
+    let url = `ws://${address}:5000/echo`;
+    let socket;
+    console.log(`Creating WebSocket Connection to ${url}`);
+    const options = {
+        debug: false,
+        startClosed: false,
+    };
+
+    socket = new ReconnectingWebSocket(url, [], options);
+    return socket;
+}
+
+function createConnection(store, address) {
+    createWebSocket(address).then((socket) => {
+        socket.onmessage = (msg) => {
+            console.log(`socket rx:${msg.data}`);
+        };
+
+        socket.onopen = () => {
+            let msg = 'hello world!';
+            console.log(`socket tx:${msg}`);
+            socket.send(msg);
+        };
+    });
+}
 
 // This function is run by Vuex when it creates the plugin.  The vuex store is passed
 // in to the function so that the plugin can access the store.
@@ -66,6 +95,14 @@ export default function createCrestronPlugin() {
             // Subscribe to CrComLib feedback.  All joins on the panel will be subscribed to
             // and turned into store mutations
             processFeedback(store);
+        } else {
+            let address;
+            if (location.hostname == 'localhost') {
+                address = process.env.VUE_APP_LOCAL_PROCESSOR;
+            } else {
+                address = location.hostname;
+            }
+            createConnection(store, address);
         }
     };
 }

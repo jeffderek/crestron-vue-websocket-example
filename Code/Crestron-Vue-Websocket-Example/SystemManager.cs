@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebSocketSharp;
+using WebSocketSharp.Server;
 
 namespace Crestron_Vue_Websocket_Example
 {
@@ -34,6 +36,15 @@ namespace Crestron_Vue_Websocket_Example
         /// </summary>
         private bool disposedValue;
 
+        public class Echo : WebSocketBehavior
+        {
+            protected override void OnMessage(MessageEventArgs e)
+            {
+                Console.WriteLine($"Rx: {e.Data}");
+                Send(e.Data);
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemManager"/> class.
         /// </summary>
@@ -41,12 +52,21 @@ namespace Crestron_Vue_Websocket_Example
         public SystemManager(ControlSystem controlSystem)
         {
             ControlSystem = controlSystem;
+
+            var server = new WebSocketServer("ws://0.0.0.0:5000");
+            server.AddWebSocketService<Echo>("/echo");
+            server.Start();
+            Console.WriteLine("WS Server Started");
+
+
         }
 
         /// <summary>
         /// Gets the Control System.
         /// </summary>
         public ControlSystem ControlSystem { get; private set; }
+
+        private WebSocketServer server;
 
         /// <inheritdoc/>
         public void Dispose()
@@ -67,7 +87,7 @@ namespace Crestron_Vue_Websocket_Example
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    server.Stop();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

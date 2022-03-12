@@ -1,1 +1,1 @@
-# crestron-vue-simpl-example
+# crestron-vue-websocket-example

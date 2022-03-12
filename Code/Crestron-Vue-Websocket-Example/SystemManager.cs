@@ -36,15 +36,6 @@ namespace Crestron_Vue_Websocket_Example
         /// </summary>
         private bool disposedValue;
 
-        public class Echo : WebSocketBehavior
-        {
-            protected override void OnMessage(MessageEventArgs e)
-            {
-                Console.WriteLine($"Rx: {e.Data}");
-                Send(e.Data);
-            }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemManager"/> class.
         /// </summary>
@@ -52,21 +43,24 @@ namespace Crestron_Vue_Websocket_Example
         public SystemManager(ControlSystem controlSystem)
         {
             ControlSystem = controlSystem;
-
-            var server = new WebSocketServer("ws://0.0.0.0:5000");
-            server.AddWebSocketService<Echo>("/echo");
-            server.Start();
-            Console.WriteLine("WS Server Started");
-
-
+            Touchpanel = new Touchpanel(controlSystem);
+            WebUi = new WebUi();
         }
+
+        /// <summary>
+        /// Gets the Touchpanel that handles IP Table communication.
+        /// </summary>
+        public Touchpanel Touchpanel { get; private set; }
+
+        /// <summary>
+        /// Gets the WebUi that all socket communication goes over.
+        /// </summary>
+        public WebUi WebUi { get; private set; }
 
         /// <summary>
         /// Gets the Control System.
         /// </summary>
         public ControlSystem ControlSystem { get; private set; }
-
-        private WebSocketServer server;
 
         /// <inheritdoc/>
         public void Dispose()
@@ -87,7 +81,8 @@ namespace Crestron_Vue_Websocket_Example
             {
                 if (disposing)
                 {
-                    server.Stop();
+                    WebUi.Dispose();
+                    Touchpanel.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer

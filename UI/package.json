@@ -1,13 +1,13 @@
 {
-    "name": "crestron-vue-example",
+    "name": "crestron-vue-websocket-example",
     "version": "0.1.0",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "build:archive:dev": "vue-cli-service build --mode development && ch5-cli archive -p crestron-vue-example -d dist -o tsw",
-        "build:archive:prod": "vue-cli-service build && ch5-cli archive -p crestron-vue-example -d dist -o tsw",
-        "deploy": "ch5-cli deploy -H test-tsw1070 -u admin -i C:\\Users\\jm13838\\.ssh\\id_rsa -t touchscreen tsw/crestron-vue-example.ch5z",
+        "build:archive:dev": "vue-cli-service build --mode development && ch5-cli archive -p crestron-vue-websocket-example -d dist -o tsw",
+        "build:archive:prod": "vue-cli-service build && ch5-cli archive -p crestron-vue-websocket-example -d dist -o tsw",
+        "deploy": "ch5-cli deploy -H test-tsw1070 -p -t touchscreen tsw/crestron-vue-websocket-example.ch5z",
         "onestep:dev": "npm run build:archive:dev && npm run deploy",
         "onestep:prod": "npm run build:archive:prod && npm run deploy"
     },

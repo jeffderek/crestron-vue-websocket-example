@@ -9,6 +9,7 @@ These project are not intended to teach Vue or Vuex, nor are they intended to pr
 ## Project Setup
 
 1. UI
+    1. :heavy_exclamation_mark: You must use Node version 16.x to build this project.  If you are not familiar with switching node versions I highly recommend you install Node Version manager, which makes it simple.  This project relies on an older version of Webpack in the vue-cli, which uses unsupported SSL cryptographic routines in newer versions of Node.  The correct solution is to update everything to run on Vite, but I haven't yet had the time to crack the code on how to get Vite to run on a *60 series panel.  When I do I will update the demo, but for now the general principles still apply here as long as you use Node version 16.x
     1. Open the UI folder in Visual Studio Code
     2. In terminal, run `npm install`.
     3. Choose one of three ways to deploy the project

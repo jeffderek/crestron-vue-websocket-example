@@ -115,8 +115,8 @@ csharp_space_between_method_call_empty_parameter_list_parentheses = false
 # Wrapping preferences
 csharp_preserve_single_line_statements = true
 csharp_preserve_single_line_blocks = true
-dotnet_diagnostic.SX1101.severity=warning
-dotnet_diagnostic.SA1101.severity=silent
+dotnet_diagnostic.SX1101.severity=silent
+dotnet_diagnostic.SA1101.severity=warning
 ###############################
 # VB Coding Conventions       #
 ###############################

@@ -19,9 +19,10 @@
 using System;
 using Crestron.SimplSharp;
 using Crestron.SimplSharpPro.UI;
+using Crestron_Vue_Websocket_Example.Net;
 using Evands.Pellucid.Diagnostics;
 
-namespace Crestron_Vue_Websocket_Example
+namespace Crestron_Vue_Websocket_Example.Devices
 {
     /// <summary>
     /// The touchpanel class for handling the Standard IP Table communication with the panel.
@@ -47,15 +48,15 @@ namespace Crestron_Vue_Websocket_Example
         /// <param name="controlSystem">ControlSystem.</param>
         public Touchpanel(ControlSystem controlSystem)
         {
-            device = new Tsw1070('\x03', controlSystem);
+            this.device = new Tsw1070('\x03', controlSystem);
 
-            if (device.Register() != Crestron.SimplSharpPro.eDeviceRegistrationUnRegistrationResponse.Success)
+            if (this.device.Register() != Crestron.SimplSharpPro.eDeviceRegistrationUnRegistrationResponse.Success)
             {
-                this.LogError($"Error Registering the Touchpanel on IpId 0x{device.ID:X2}: {device.RegistrationFailureReason}");
+                Logger.LogError(this, $"Error Registering the Touchpanel on IpId 0x{this.device.ID:X2}: {this.device.RegistrationFailureReason}");
             }
             else
             {
-                device.IpInformationChange += (sender, args) =>
+                this.device.IpInformationChange += (sender, args) =>
                 {
                     var panelIp = args.DeviceIpAddress;
                     string processorIp = string.Empty;
@@ -78,11 +79,11 @@ namespace Crestron_Vue_Websocket_Example
 
                     if (!string.IsNullOrWhiteSpace(processorIp))
                     {
-                        device.StringInput[1].StringValue = processorIp;
+                        this.device.StringInput[1].StringValue = processorIp;
                     }
                     else
                     {
-                        this.LogError($"Unable to determine the Processor IP for {device.ID} at {panelIp} to connect to");
+                        Logger.LogError(this, $"Unable to determine the Processor IP for {this.device.ID} at {panelIp} to connect to");
                     }
                 };
             }
@@ -93,7 +94,7 @@ namespace Crestron_Vue_Websocket_Example
         /// </summary>
         public void Dispose()
         {
-            Dispose(disposing: true);
+            this.Dispose(disposing: true);
         }
 
         /// <summary>
@@ -103,15 +104,15 @@ namespace Crestron_Vue_Websocket_Example
         /// <param name="disposing">Disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!this.disposedValue)
             {
                 if (disposing)
                 {
-                    device?.UnRegister();
-                    device?.Dispose();
+                    this.device?.UnRegister();
+                    this.device?.Dispose();
                 }
 
-                disposedValue = true;
+                this.disposedValue = true;
             }
         }
     }

@@ -53,9 +53,9 @@ namespace Crestron_Vue_Websocket_Example
                 Thread.MaxNumberOfUserThreads = 20;
 
                 // Subscribe to the controller events (System, Program, and Ethernet)
-                CrestronEnvironment.SystemEventHandler += new SystemEventHandler(ControllerSystemEventHandler);
-                CrestronEnvironment.ProgramStatusEventHandler += new ProgramStatusEventHandler(ControllerProgramEventHandler);
-                CrestronEnvironment.EthernetEventHandler += new EthernetEventHandler(ControllerEthernetEventHandler);
+                CrestronEnvironment.SystemEventHandler += new SystemEventHandler(this.ControllerSystemEventHandler);
+                CrestronEnvironment.ProgramStatusEventHandler += new ProgramStatusEventHandler(this.ControllerProgramEventHandler);
+                CrestronEnvironment.EthernetEventHandler += new EthernetEventHandler(this.ControllerEthernetEventHandler);
 
                 // Register the Pellucid log writer
                 Logger.RegisterLogWriter(new CrestronLogWriter());
@@ -73,17 +73,17 @@ namespace Crestron_Vue_Websocket_Example
                 Evands.Pellucid.Terminal.Formatting.Formatters.Chrome = new Evands.Pellucid.Terminal.Formatting.RoundedChrome();
 
                 // Set up the global commands
-                GlobalCommand = new GlobalCommand("app", "Application Commands.", Access.Programmer);
-                GlobalCommand.AddToConsole();
-                Console.InitializeConsole(GlobalCommand.Name);
-                GlobalCommand.CommandExceptionEncountered += (sender, e) =>
+                this.GlobalCommand = new GlobalCommand("app", "Application Commands.", Access.Programmer);
+                this.GlobalCommand.AddToConsole();
+                ProConsole.InitializeConsole(this.GlobalCommand.Name);
+                this.GlobalCommand.CommandExceptionEncountered += (sender, e) =>
                 {
                     this.LogException(e.Exception, $"Error handling CommandContent: {e.CommandContent}");
                 };
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                ErrorLog.Error("Error in the constructor: {0}", e.Message);
+                Logger.LogException(this, ex, "Error in the constructor: {0}");
             }
         }
 
@@ -112,28 +112,21 @@ namespace Crestron_Vue_Websocket_Example
         /// </summary>
         public override void InitializeSystem()
         {
-            try
+            System.Threading.ThreadPool.QueueUserWorkItem(_ =>
             {
-                System.Threading.ThreadPool.QueueUserWorkItem(_ =>
-                {
-                    // Wait for InitializeSystem to exit and for the program to report as started
-                    Thread.Sleep(750);
+                // Wait for InitializeSystem to exit and for the program to report as started
+                Thread.Sleep(1000);
 
-                    try
-                    {
-                        // Create the SystemManager
-                        SystemManager = new SystemManager(this);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogException(this, e, "Error in Primary Thread");
-                    }
-                });
-            }
-            catch (Exception e)
-            {
-                ErrorLog.Error("Error in InitializeSystem: {0}", e.Message);
-            }
+                try
+                {
+                    // Create the SystemManager
+                    this.SystemManager = new SystemManager(this);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(this, ex, "Error in Primary Thread");
+                }
+            });
         }
 
         /// <summary>
@@ -155,11 +148,11 @@ namespace Crestron_Vue_Websocket_Example
                     // LAN is the adapter is the port connected to external networks.
                     if (ethernetEventArgs.EthernetAdapter == EthernetAdapterType.EthernetLANAdapter)
                     {
-                        ErrorLog.Notice("LAN Link Down");
+                        Logger.LogNotice(this, "LAN Link Down");
                     }
                     else if (ethernetEventArgs.EthernetAdapter == EthernetAdapterType.EthernetCSAdapter)
                     {
-                        ErrorLog.Notice("CS Link Down");
+                        Logger.LogNotice(this, "CS Link Down");
                     }
 
                     break;
@@ -169,11 +162,11 @@ namespace Crestron_Vue_Websocket_Example
                 {
                     if (ethernetEventArgs.EthernetAdapter == EthernetAdapterType.EthernetLANAdapter)
                     {
-                        ErrorLog.Notice("LAN Link Up");
+                        Logger.LogNotice(this, "LAN Link Up");
                     }
                     else if (ethernetEventArgs.EthernetAdapter == EthernetAdapterType.EthernetCSAdapter)
                     {
-                        ErrorLog.Notice("CS Link Up");
+                        Logger.LogNotice(this, "CS Link Up");
                     }
 
                     break;
@@ -206,7 +199,7 @@ namespace Crestron_Vue_Websocket_Example
 
                 case eProgramStatusEventType.Stopping:
                 {
-                    SystemManager.Dispose();
+                    this.SystemManager.Dispose();
                     break;
                 }
             }

@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Crestron_Vue_Websocket_Example.Devices;
+using Crestron_Vue_Websocket_Example.Net;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -42,15 +44,28 @@ namespace Crestron_Vue_Websocket_Example
         /// <param name="controlSystem">The ControlSystem to be managed.</param>
         public SystemManager(ControlSystem controlSystem)
         {
-            ControlSystem = controlSystem;
-            Touchpanel = new Touchpanel(controlSystem);
-            WebUi = new WebUi();
+            this.ControlSystem = controlSystem;
+            this.Mock = new Mock();
+            this.Touchpanel = new Touchpanel(controlSystem);
+
+            // In an actual system, you would probably read these values in from a config file.
+            // The WebUi hosts BOTH the HTTP project and the Websocket.  The WebUi class needs to know
+            // where on the processor the compiled HTTP project exists at.
+            // The WebSocketPath and port can be pretty much whatever you want.  The Path is used to
+            // differentiate between different types of WebSocketBehaviors for the same server, but
+            // this design uses the same WebSocketBehavior (WebUiClient) for all connections.
+            this.WebUi = new WebUi(this, "/user/html", "app", 5620, true);
         }
 
         /// <summary>
         /// Gets the Touchpanel that handles IP Table communication.
         /// </summary>
         public Touchpanel Touchpanel { get; private set; }
+
+        /// <summary>
+        /// Gets a simple object that contains our fake devices that get reported to the touchpanel.
+        /// </summary>
+        public Mock Mock { get; private set; }
 
         /// <summary>
         /// Gets the WebUi that all socket communication goes over.
@@ -66,7 +81,7 @@ namespace Crestron_Vue_Websocket_Example
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            this.Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
 
@@ -77,17 +92,15 @@ namespace Crestron_Vue_Websocket_Example
         /// <param name="disposing">Disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!this.disposedValue)
             {
                 if (disposing)
                 {
-                    WebUi.Dispose();
-                    Touchpanel.Dispose();
+                    this.WebUi.Dispose();
+                    this.Touchpanel.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
+                this.disposedValue = true;
             }
         }
     }

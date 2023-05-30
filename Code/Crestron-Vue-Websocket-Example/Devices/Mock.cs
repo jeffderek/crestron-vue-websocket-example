@@ -16,7 +16,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-namespace Crestron_Vue_Websocket_Example
+namespace Crestron_Vue_Websocket_Example.Devices
 {
     /// <summary>
     /// A class for mocking system status.
